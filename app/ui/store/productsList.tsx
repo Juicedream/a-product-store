@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import ProductCard from "./productCard";
 import ProductCardSkeleton from "./productCardSkeleton";
-const items = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+const items = [1,2,3,4,5,6,7,8,9,10,11,12]
 export default function ProductsList() {
   return (
     <div>

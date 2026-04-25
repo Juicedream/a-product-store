@@ -3,6 +3,7 @@ import Banner from "../ui/store/banner";
 import BannerSkeleton from "../ui/store/bannerSkeleton";
 import CategoryList from "../ui/store/categoryList";
 import ProductsList from "../ui/store/productsList";
+import Pagination from "../ui/store/pagination";
 
 export default function StoreFrontPage() {
   return (
@@ -12,7 +13,7 @@ export default function StoreFrontPage() {
       </Suspense>
       <CategoryList />
       <ProductsList />
-      
+      <Pagination />
     </>
   );
 }

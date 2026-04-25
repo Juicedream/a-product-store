@@ -43,13 +43,13 @@ export default function Navbar() {
         <div title="Search here" className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer">
           <Search size={18} />
         </div>
-        <div title="Your profile" className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer">
+        <Link href={"/profile"} title="Your profile" className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer">
           <CircleUserRound size={18} />
-        </div>
-        <div title="Cart" className="relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer px-2">
+        </Link>
+        <Link href={"/cart"} title="Cart" className="relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer px-2">
           <span className="rounded-full absolute -top-3 right-0 bg-slate-200">0</span>
           <ShoppingCart size={18} />
-        </div>
+        </Link>
       </div>
     </div>
   );
