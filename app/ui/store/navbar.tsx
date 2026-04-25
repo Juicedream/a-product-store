@@ -29,8 +29,9 @@ export default function Navbar() {
             <Link
               key={navItem.id}
               href={navItem.path}
-              className={clsx('transition duration-500 ease-in-out hover:bg-blue-300 hover:text-white transform hover:-translate-y-1 hover:scale-110 p-2 rounded-md', 
-                {"text-blue-400 font-semibold": pathname === navItem.path}
+              className={clsx('rounded-md p-2', 
+                {"text-white bg-blue-400": pathname === navItem.path},
+                {"transition duration-500 ease-in-out transform hover:text-black hover:-translate-y-1 hover:scale-102": pathname !== navItem.path}
               )}
             >
               <li>{navItem.name}</li>
@@ -45,7 +46,8 @@ export default function Navbar() {
         <div title="Your profile" className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer">
           <CircleUserRound size={18} />
         </div>
-        <div title="Cart" className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer">
+        <div title="Cart" className="relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer px-2">
+          <span className="rounded-full absolute -top-3 right-0 bg-slate-200">0</span>
           <ShoppingCart size={18} />
         </div>
       </div>
