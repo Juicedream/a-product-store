@@ -17,7 +17,7 @@ export default function Footer() {
   return (
     <div className="fixed bottom-0 bg-white/98 px-42 flex flex-col lg:flex-row items-center py-3 w-full justify-between">
       <div>
-        <ul className="flex space-x-8 mr-22 text-xl lg:text-sm">
+        <ul className="flex space-x-8 text-xl lg:text-sm">
           {navlinks.map((navItem) => (
             <Link
               key={navItem.id}

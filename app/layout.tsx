@@ -3,6 +3,8 @@ import { Lato, Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./ui/store/navbar";
 import Footer from "./ui/store/footer";
+import { CartProvider } from "./providers/cartProvider";
+import { ToastProvider } from "./providers/toastProvider";
 
 const lato = Lato({
   variable: "--font-lato",
@@ -32,9 +34,13 @@ export default function RootLayout({
       className={`${lato.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        <div className="px-42 mb-30">{children}</div>
-        <Footer />
+        <ToastProvider>
+          <CartProvider>
+            <Navbar />
+            <div className="px-42 mb-30">{children}</div>
+            <Footer />
+          </CartProvider>
+        </ToastProvider>
       </body>
     </html>
   );

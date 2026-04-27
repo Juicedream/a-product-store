@@ -1,4 +1,5 @@
 "use client";
+import { useCart } from "@/app/providers/cartProvider";
 import clsx from "clsx";
 import { CircleUserRound, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
@@ -13,7 +14,7 @@ const navlinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  console.log(pathname);
+  const { cartTotal } = useCart();
   return (
     <div className="sticky top-0 bg-white px-42 flex flex-col lg:flex-row items-center py-3">
       <Link
@@ -47,7 +48,7 @@ export default function Navbar() {
           <CircleUserRound size={18} />
         </Link>
         <Link href={"/cart"} title="Cart" className="relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer px-2">
-          <span className="rounded-full absolute -top-3 right-0 bg-slate-200">0</span>
+          <span className="rounded-full absolute -top-3 right-0 bg-slate-200">{cartTotal}</span>
           <ShoppingCart size={18} />
         </Link>
       </div>

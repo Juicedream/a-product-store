@@ -1,8 +1,14 @@
+"use client";
+import { useCart } from "@/app/providers/cartProvider";
 import Image from "next/image";
 
 export default function ProductCard() {
+  const {addToCart} = useCart();
+  function addCart() {
+   addToCart();
+  }
   return (
-    <div className="flex-col max-w-fit">
+    <div className="flex-col max-w-fit shadow-sm shadow-black/50 rounded-2xl">
       <Image
         src="/shirt.jpg"
         width={250}
@@ -17,7 +23,9 @@ export default function ProductCard() {
           <button className="px-4 py-2 text-white bg-black rounded-md hover:bg-black/60 hover:cursor-pointer uppercase">
             View
           </button>
-          <button className="px-4 py-2 text-white bg-blue-400 rounded-md hover:bg-blue-500 hover:cursor-pointer uppercase">
+          <button className="px-4 py-2 text-white bg-blue-400 rounded-md hover:bg-blue-500 hover:cursor-pointer uppercase"
+          onClick={addCart}
+          >
             Add to Cart
           </button>
         </div>
