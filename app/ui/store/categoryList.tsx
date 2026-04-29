@@ -9,11 +9,11 @@ const categories = [
 
 export default function CategoryList() {
   return (
-    <div className="py-2 w-full bg-white flex flex-row items-center space-x-20 justify-center">
+    <div className="py-2 max-w-6xl md:max-w-7xl lg:w-full bg-white bg-linear-to-bl from-white to-blue-400 mx-auto flex justify-around mb-4">
       {
         categories.map((category) => (
-          <p key={category.id} className="flex flex-col justify-center items-center gap-2">
-            <span className="text-blue-400">{category.icon}</span>
+          <p key={category.id} className="inline-flex gap-2">
+            <span className="text-blue-400 text-center">{category.icon}</span>
             {category.name}
             </p>
         ))

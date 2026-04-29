@@ -1,5 +1,5 @@
 "use client";
-import { paginate } from "@/utils/paginate";
+import { paginate } from "@/app/utils/paginate";
 import clsx from "clsx";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";

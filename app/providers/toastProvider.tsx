@@ -1,6 +1,6 @@
 "use client";
-import { Toast } from "@/lib/toast";
-import { createContext, useState ,useEffect } from "react";
+import { Toast } from "@/app/lib/toast";
+import { createContext, useState, useEffect } from "react";
 import ToastItem from "../ui/toastItem";
 
 type ToastType = {
@@ -9,8 +9,14 @@ type ToastType = {
   duration?: number;
   bgColor?: string;
   textColor?: string;
-  position?: "top-right" | "top-left" | "bottom-right" | "bottom-left" | "top-center" | "bottom-center";
-}
+  position?:
+    | "top-right"
+    | "top-left"
+    | "bottom-right"
+    | "bottom-left"
+    | "top-center"
+    | "bottom-center";
+};
 
 const ToastContext = createContext(null);
 
@@ -31,12 +37,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={null}>
       <div className="fixed inset-0 pointer-events-none z-50">
-       {toasts.map((toast) => (
-        <ToastItem key={toast.id} {...toast} />
-       ))}
+        {toasts.map((toast) => (
+          <ToastItem key={toast.id} {...toast} />
+        ))}
       </div>
       {children}
     </ToastContext.Provider>
-  )
+  );
 }
-

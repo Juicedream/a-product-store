@@ -2,15 +2,15 @@ import { ShoppingCartIcon } from "lucide-react";
 
 export default function CartForm() {
   return (
-    <div className="flex flex-col">
-      <div>
+    <div className="flex flex-col p-4 mx-auto">
+      <div className="lg:text-center">
         <h3 className="font-poppins font-bold text-2xl">Your Information</h3>
         <p className="text-sm text-slate-400">
           Fill the information below to checkout
         </p>
       </div>
       <div>
-        <form className="grid grid-cols-2 px-4 py-6 gap-y-5">
+        <form className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] lg:grid-cols-1 lg:justify-items-center p-2 mx-auto">
           <div className="flex flex-col justify-between items-start">
             <label
               htmlFor="first-name"
@@ -116,12 +116,12 @@ export default function CartForm() {
               placeholder=""
               className="rounded-md active:ring-blue-400 p-3 border border-slate-400 w-full"
             />
-            <button className="py-4 w-full bg-slate-800 hover:bg-slate-600 hover:cursor-pointer text-white rounded-xl">
+            <button className="p-4 lg:mx-auto bg-slate-800 hover:bg-slate-600 hover:cursor-pointer text-white rounded-xl">
               Apply
             </button>
           </div>
         </form>
-        <button className="px-8 py-4 bg-blue-400 w-full text-lg text-white font-lato rounded-md hover:bg-blue-500 hover:cursor-pointer flex items-center justify-center gap-4">
+        <button className="p-4 bg-blue-600 text-lg lg:mx-auto mt-4 text-white font-lato rounded-md hover:bg-blue-500 hover:cursor-pointer flex items-center justify-center gap-4">
           Checkout {" "} <ShoppingCartIcon color="white"/>
         </button>
       </div>

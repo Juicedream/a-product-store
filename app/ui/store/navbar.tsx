@@ -16,31 +16,30 @@ export default function Navbar() {
   const pathname = usePathname();
   const { cartTotal } = useCart();
   return (
-    <div className="sticky top-0 bg-white px-42 flex flex-col lg:flex-row items-center py-3">
-      <Link
-        href={"/"}
-        className="font-bold text-xl lg:text-2xl"
-      >
-        <h1 className=" hover:text-blue-300 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer">STORE</h1>
+    <header className="sticky top-0 py-3 px-4 bg-white z-999">
+      <nav className="flex flex-col lg:flex-row gap-3 items-center lg:max-w-7xl mx-auto justify-between transition-all">
+        <Link href={"/"} className="hidden lg:block">
+        <h1 className="uppercase text-sm md:text-lg lg:text-2xl font-bold hover:text-blue-300 duration-500 ease-in-out transform hover:-translate-y-1 transition-all hover:cursor-pointer">Store</h1>
       </Link>
-      <div className="flex-1"></div>
-      <div>
-        <ul className="flex space-x-8 mr-22 text-xl lg:text-sm">
-          {navlinks.map((navItem) => (
-            <Link
-              key={navItem.id}
+      <div className="">
+        <ul className="space-x-6">
+          {navlinks.map(navItem => (
+            <li key={navItem.id} className={clsx(
+                            "rounded-md p-2 inline",
+                            { "text-blue-400": pathname === navItem.path },
+                            {
+                              "transition duration-500 ease-in-out transform hover:bg-blue-400 hover:text-white hover:-translate-y-1 hover:scale-102":
+                                pathname !== navItem.path,
+                            },
+                          )}>
+              <Link
               href={navItem.path}
-              className={clsx('rounded-md p-2', 
-                {"text-white bg-blue-400": pathname === navItem.path},
-                {"transition duration-500 ease-in-out transform hover:text-black hover:-translate-y-1 hover:scale-102": pathname !== navItem.path}
-              )}
-            >
-              <li>{navItem.name}</li>
-            </Link>
+              className="">{navItem.name}</Link>
+            </li>
           ))}
         </ul>
       </div>
-      <div className="flex space-x-6 text-sm">
+       <div className="flex space-x-6 text-sm">
         <div title="Search here" className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer">
           <Search size={18} />
         </div>
@@ -48,10 +47,13 @@ export default function Navbar() {
           <CircleUserRound size={18} />
         </Link>
         <Link href={"/cart"} title="Cart" className="relative transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer px-2">
-          <span className="rounded-full absolute -top-3 right-0 bg-slate-200">{cartTotal}</span>
+          <span className="p-1 text-xs rounded-full absolute -top-3 -right-1 bg-slate-200">{cartTotal}</span>
           <ShoppingCart size={18} />
         </Link>
       </div>
-    </div>
+      </nav>
+      
+    </header>
   );
 }
+

@@ -37,7 +37,7 @@ export default function RootLayout({
         <ToastProvider>
           <CartProvider>
             <Navbar />
-            <div className="px-42 mb-30">{children}</div>
+            <div className="mb-30">{children}</div>
             <Footer />
           </CartProvider>
         </ToastProvider>

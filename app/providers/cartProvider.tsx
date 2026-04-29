@@ -1,17 +1,17 @@
 "use client";
-import { Toast } from '@/lib/toast';
-import { createContext, useState, useContext } from 'react';
+import { Toast } from "@/app/lib/toast";
+import { createContext, useState, useContext } from "react";
 
 type CartContextType = {
   cartTotal: number;
   addToCart: () => void;
-}
+};
 
 const CartContext = createContext<CartContextType | null>(null);
 
-export  function CartProvider({ children }: {children: React.ReactNode}){
+export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartTotal, setCartTotal] = useState(0);
-  function addToCart() { 
+  function addToCart() {
     setCartTotal((prev) => prev + 1);
     Toast.default("Added to cart");
   }
@@ -20,7 +20,7 @@ export  function CartProvider({ children }: {children: React.ReactNode}){
     <CartContext.Provider value={{ cartTotal, addToCart }}>
       {children}
     </CartContext.Provider>
-  )
+  );
 }
 
 export function useCart() {

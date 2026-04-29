@@ -3,26 +3,26 @@ import Image from "next/image";
 
 export default function Banner() {
   return (
-    <div className="flex w-full h-82 bg-transparent">
-      <div className="h-full flex flex-col items-start justify-center hover:cursor-pointer ">
-        <ChevronLeft size={82} className="text-slate-400 hover:text-blue-500"/>
+    <div className="flex max-w-7xl lg:w-full mx-auto max-h-82 items-center bg-slate-300/10">
+      <div className="hover:cursor-pointer">
+        <ChevronLeft size={62} className="text-slate-400 hover:text-blue-500"/>
       </div>
-      <div className="h-full grow flex flex-row justify-between items-center px-10">
-        <div className="space-y-8 flex-wrap py-5 px-12">
-          <h2 className="text-6xl uppercase">Your Products are great</h2>
-          <button className="uppercase px-12 py-3 bg-black text-white text-center hover:bg-black/70 rounded-sm hover:cursor-pointer">Shop Now</button>
+      <div className="flex flex-row justify-between items-center bg-slate-900/90 flex-1 ">
+        <div className="space-y-3 flex-wrap p-4">
+          <h2 className="text-md lg:text-2xl uppercase text-white">Your Products are great</h2>
+          <button className="uppercase transition-colors p-4 bg-black text-white text-center hover:bg-black/70 rounded-2xl hover:cursor-pointer text-sm lg:text-lg">Shop Now</button>
         </div>
-        <div className="px-10 py-2">
+        <div className="max-w-xl">
           <Image 
           src="/watch.png"
-          height={350}
-          width={350}
+          width={150}
+          height={150}
           alt="Watch Image displayed in the banner section"
         />
         </div>
       </div>
-      <div className="h-full flex flex-col items-end justify-center hover:cursor-pointer">
-        <ChevronRight size={82} className="text-blue-400 hover:text-blue-500"/>
+      <div className="hover:cursor-pointer">
+        <ChevronRight size={62} className="text-blue-400 hover:text-blue-500"/>
       </div>
     </div>
   )

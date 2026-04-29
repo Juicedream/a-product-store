@@ -5,7 +5,7 @@ export default function ProductCardSkeleton() {
         src="/shirt.jpg"
         width={250}
         height={50}
-        className="object-contain rounded-t-2xl"
+        className="object-contain rounded-t-2xl h-auto w-auto"
         alt="Shirt image for the product"
       /> */}
       <div className="rounded-b-2xl py-4 px-4 flex flex-col gap-y-2 size-10">
