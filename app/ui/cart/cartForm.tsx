@@ -89,14 +89,14 @@ export default function CartForm() {
               <input type="radio" name="choice" id="yes-choice" />{" "}
               <label
                 htmlFor="yes-choice"
-                className="text-sm text-slate-600 font-lato"
+                className="text-sm text-white font-lato"
               >
                 Yes
               </label>
               <input type="radio" name="choice" id="no-choice" />{" "}
               <label
                 htmlFor="no-choice"
-                className="text-sm text-slate-600 font-lato"
+                className="text-sm text-white font-lato"
               >
                 No
               </label>

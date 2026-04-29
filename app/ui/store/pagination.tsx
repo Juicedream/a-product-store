@@ -23,7 +23,7 @@ export default function Pagination() {
   }, [currentNumber])
 
   return (
-    <div className="w-full flex items-center justify-end space-x-8 mt-8">
+    <div className="flex items-center justify-end space-x-8 mt-8 max-w-7xl mx-auto px-4">
       <button
       title="Prev"
       onClick={handlePreviousPage}

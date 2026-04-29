@@ -13,11 +13,10 @@ const date = new Date();
 
 export default function Footer() {
   const pathname = usePathname();
-  console.log(pathname);
   return (
-    <div className="fixed bottom-0 bg-white/98 px-42 flex flex-col lg:flex-row items-center py-3 w-full justify-between">
-      <div>
-        <ul className="flex space-x-8 text-xl lg:text-sm">
+    <div className="fixed bottom-0 bg-white/98 mx-auto px-8 flex flex-col lg:flex-row items-center w-full py-3 justify-between">
+      <div className="">
+        <ul className="lg:flex space-x-8 text-md lg:text-sm hidden">
           {navlinks.map((navItem) => (
             <Link
               key={navItem.id}
@@ -36,13 +35,13 @@ export default function Footer() {
           ))}
         </ul>
       </div>
-      
-      <Link href={"/"} className="font-bold text-xl lg:text-2xl">
+
+      <Link href={"/"} className="font-bold text-md lg:text-xl">
         <h1 className=" hover:text-blue-300 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer">
           STORE
         </h1>
       </Link>
-      <div className="flex space-x-6 text-sm">
+      <div className="flex space-x-6 text-xs lg:text-sm">
         <p> All Rights Reserverd &copy; {date.getFullYear()}</p>
       </div>
     </div>
