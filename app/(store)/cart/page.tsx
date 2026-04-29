@@ -2,7 +2,11 @@
 import CartForm from "@/app/ui/cart/cartForm";
 import CartItem from "@/app/ui/cart/cartItem";
 
+import { Metadata } from "next"
 
+export const metadata: Metadata = {
+  title: "Cart Page"
+}
 
 const cartItems: number[] = [1,2,3,4,5,6,7,8,9,10];
 // const cartItems: number[] = [] ;
