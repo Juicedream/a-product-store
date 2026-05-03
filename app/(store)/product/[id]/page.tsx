@@ -1,22 +1,31 @@
 "use client";
-
+import { getProductById } from "@/app/actions/products";
 import { useCart } from "@/app/providers/cartProvider";
+import { ProductTypes, ReviewTypes } from "@/app/types";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Send } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-
-const reviews: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-// let reviews = [];
+const placeholderImageUrl =
+  process.env.NEXT_PUBLIC_PLACEHOLDER_IMAGE_URL ||
+  "https://placehold.co/400x400.png";
+console.log(placeholderImageUrl);
 
 export default function Page() {
   const pathname = usePathname();
-  console.log(pathname);
-  const id = pathname.split("/")[2] || "nothing here";
+  let id = pathname.split("/")[2] || "nothing here";
+  id = id.replace(/%20/g, " ");
   const { addToCart } = useCart();
   const router = useRouter();
   function addCart() {
     addToCart();
   }
+  const { data } = useQuery({
+    queryKey: ["product", id],
+    queryFn: async () => await getProductById(id),
+  });
+  const product = data as ProductTypes;
+  const reviews: ReviewTypes[] = product?.reviews || [];
 
   return (
     <div className="mt-8 grid grid-rows-2 lg:grid-cols-2 gap-4 mx-auto max-w-7xl md:max-w-6xl px-4">
@@ -32,26 +41,37 @@ export default function Page() {
             <div className="flex items-center gap-4 shrink-10">
               <Image
                 loading="eager"
-                src="/shirt.jpg"
-                alt="Shirt image of the product"
+                src={product?.imageUrl || placeholderImageUrl}
+                alt={`Image of ${product?.name} product`}
                 width={180}
                 height={100}
-                className="rounded-md object-contain w-auto h-auto"
+                className="rounded-md object-cover w-full h-auto"
               />
               <div className="space-y-2">
                 <h2 className="text-2xl lg:text-3xl font-semibold font-lato ">
-                  Shirt
+                  {product?.name}
                 </h2>
                 <p className="text-wrap text-slate-200">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Magnam tempora voluptatum pariatur vitae dolorum.
+                  {product?.description}
+                </p>
+                <p className="">
+                  Category:{" "}
+                  <span className="font-bold capitalize text-blue-300">
+                    {product?.category}
+                  </span>
+                </p>
+                <p>
+                  Stock Left:{" "}
+                  <span className="font-bold">{product?.stock}</span>
                 </p>
                 <p className="font-bold italic text-sm lg:text-md">SKU-{id}</p>
-                <span className="text-2xl font-poppins">₦ 7,800</span>
-                <div className="mt-8 space-x-4 lg:flex">
+                <span className="text-2xl font-poppins">
+                  ₦ {product?.price.toLocaleString()}.00
+                </span>
+                <div className="mt-8 space-x-4 lg:flex space-y-2 lg:space-y-0">
                   <button
                     // href={`/product/${id}`}
-                    className="px-4 py-2 text-white bg-black rounded-md hover:bg-black/60 hover:cursor-pointer uppercase"
+                    className="px-4 py-2 text-white bg-black rounded-md hover:bg-black/60 hover:cursor-pointer uppercase "
                   >
                     Buy Now
                   </button>
@@ -66,43 +86,26 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="flex items-start gap-6">
-            <Image
-              src="/shirt.jpg"
-              alt="Shirt image of the product"
-              width={40}
-              height={50}
-              className="rounded-md h-auto w-auto"
-            />
-            <Image
-              src="/shirt.jpg"
-              alt="Shirt image of the product"
-              width={40}
-              height={40}
-              className="rounded-md h-auto w-auto"
-            />
-            <Image
-              src="/shirt.jpg"
-              alt="Shirt image of the product"
-              width={40}
-              height={50}
-              className="rounded-md h-auto w-auto"
-            />
-            <Image
-              src="/shirt.jpg"
-              alt="Shirt image of the product"
-              width={40}
-              height={50}
-              className="rounded-md h-auto w-auto"
-            />
+          <div className="flex items-start gap-6 mt-8">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <Image
+                key={index}
+                src={product?.imageUrl || placeholderImageUrl}
+                alt="Shirt image of the product"
+                width={40}
+                height={50}
+                className="rounded-md h-auto w-auto"
+              />
+            ))}
           </div>
         </div>
       </div>
 
       <div className="p-8 bg-white/70 rounded-sm shadow-md shadow-black/40 relative">
         {/* Reviews */}
-        <h2 className="after:content-['(10)'] after:text-amber-500 after:ml-1 text-xl lg:text-2xl text-center">
+        <h2 className="text-xl lg:text-2xl text-center">
           Reviews
+          <span className="text-amber-500 ml-1">({reviews.length})</span>
         </h2>
 
         <div className="mb-14 mt-8">
@@ -114,7 +117,7 @@ export default function Page() {
             <div className="grid grid-cols-1 gap-4 overflow-y-scroll max-h-98">
               {reviews.map((review) => (
                 <div
-                  key={review}
+                  key={review._id}
                   className="flex flex-col gap-3 bg-slate-700 text-white p-3 rounded-2xl hover:bg-slate-600 transition-colors"
                 >
                   <p className="text-2xl lg:text-xl font-lato">

@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
+import { Providers } from "./providers/allProviders";
 import { Lato, Poppins } from "next/font/google";
 import "./globals.css";
-import Navbar from "./ui/store/navbar";
-import Footer from "./ui/store/footer";
-import { CartProvider } from "./providers/cartProvider";
-import { ToastProvider } from "./providers/toastProvider";
+
 
 const lato = Lato({
   variable: "--font-lato",
@@ -28,19 +26,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html
       lang="en"
       className={`${lato.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <ToastProvider>
-          <CartProvider>
-            <Navbar />
-            <div className="mb-30">{children}</div>
-            <Footer />
-          </CartProvider>
-        </ToastProvider>
+           <Providers>
+            <div>{children}</div>
+           </Providers>
       </body>
     </html>
   );

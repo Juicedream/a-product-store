@@ -14,9 +14,11 @@ export default function Banner() {
         </div>
         <div className="max-w-xl">
           <Image 
+          loading="eager"
           src="/watch.png"
           width={150}
           height={150}
+          className="h-auto w-auto"
           alt="Watch Image displayed in the banner section"
         />
         </div>

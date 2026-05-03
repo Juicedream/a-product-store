@@ -1,6 +1,6 @@
 export default function ProductCardSkeleton() {
   return (
-    <div className="bg-slate-400/50 flex-col w-52 h-52 animate-pulse">
+    <div className="bg-slate-400/50 flex-col w-255 h-152 animate-pulse rounded-2xl">
       {/* <Image
         src="/shirt.jpg"
         width={250}
