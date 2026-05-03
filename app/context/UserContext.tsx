@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 import { apiFetch } from "../lib/apiFetch";
-import { createSession, deleteSession } from "../lib/session";
+import { createSession, deleteSession, getSession } from "../lib/session";
 import { Toast } from "../lib/toast";
 import { storage } from "../lib/storage";
 
@@ -21,6 +21,8 @@ type UserContextType = {
   loginWithEmailPassword: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   refetchUser: () => void;
+  passwordlessLogin: (email: string) => Promise<boolean>;
+  verifyOtp: (otpCode:string, email:string) => Promise<boolean>;
 };
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -77,7 +79,80 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     [fetchUserProfile],
   );
 
+  const passwordlessLogin = useCallback(async (email: string) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/auth/passwordless-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!res.ok) {
+        const errorData = await res.json();
+        Toast.default(errorData.message || "Login failed");
+        if (
+          errorData.message ===
+          "Kindly use the otp previously sent to your email"
+        )
+          return true;
+        return false;
+      }
+      const data = await res.json();
+      Toast.default(data.message || "Check your email");
+      if (data.sent) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      Toast.error("An unexpected error occurred");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const verifyOtp = useCallback(async(otpCode:string, email:string) => {
+  setLoading(true);
+
+      try {
+        const res = await fetch(`${BACKEND_URL}/auth/verify-otp`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, otp: otpCode }),
+        });
+        if (!res.ok) {
+          const errorData = await res.json();
+          Toast.default(errorData.message || "Otp Verification failed");
+          return false;
+        }
+        const data = await res.json();
+        await createSession(data.refreshToken);
+        storage.set("accessToken", data.accessToken);
+        await fetchUserProfile();
+        Toast.default("Login Successful");
+        return true;
+      } catch (error) {
+        console.error("Otp Verification failed:", error);
+        Toast.error("An unexpected error occurred");
+        return false;
+      } finally {
+        setLoading(false);
+      }
+    }, [fetchUserProfile])
+
   const logout = useCallback(async () => {
+    const refreshToken = await getSession();
+    await fetch(`${BACKEND_URL}/auth/logout`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken: refreshToken }),
+    });
+    // if (!logout.ok) {
+    //   const errorData = await logout.json();
+    //   Toast.default(errorData.message || "Login failed");
+    // }
     storage.remove("accessToken");
     await deleteSession();
     setUser(null);
@@ -103,13 +178,11 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     loginWithEmailPassword,
     logout,
     refetchUser: fetchUserProfile,
+    passwordlessLogin,
+    verifyOtp,
   };
 
-  return (
-    <UserContext.Provider value={value as UserContextType}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 
 export function useUser() {

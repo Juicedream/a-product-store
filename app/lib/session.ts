@@ -18,3 +18,8 @@ export async function deleteSession() {
   const cookieStore = await cookies();
   cookieStore.delete('refreshToken');
 }
+
+export async function getSession() {
+  const cookieStore = await cookies();
+  return cookieStore.get('refreshToken')?.value;
+}
