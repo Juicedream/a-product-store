@@ -22,7 +22,7 @@ type UserContextType = {
   logout: () => void;
   refetchUser: () => void;
   passwordlessLogin: (email: string) => Promise<boolean>;
-  verifyOtp: (otpCode:string, email:string) => Promise<boolean>;
+  verifyOtp: (otpCode: string, email: string) => Promise<boolean>;
 };
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -113,9 +113,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const verifyOtp = useCallback(async(otpCode:string, email:string) => {
-  setLoading(true);
-
+  const verifyOtp = useCallback(
+    async (otpCode: string, email: string) => {
+      setLoading(true);
+      console.log(email, otpCode);
       try {
         const res = await fetch(`${BACKEND_URL}/auth/verify-otp`, {
           method: "POST",
@@ -140,10 +141,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       } finally {
         setLoading(false);
       }
-    }, [fetchUserProfile])
+    },
+    [fetchUserProfile],
+  );
 
   const logout = useCallback(async () => {
     const refreshToken = await getSession();
+    console.log(refreshToken);
     await fetch(`${BACKEND_URL}/auth/logout`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

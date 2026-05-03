@@ -134,8 +134,8 @@ export default function LoginPage() {
 
   async function loginWithOtp() {
     const res = await verifyOtp(otpCode, email);
-    if(res) {
-      router.push('/home');
+    if (res) {
+      router.push("/home");
     }
   }
 
@@ -162,6 +162,7 @@ export default function LoginPage() {
                   type="email"
                   id="email"
                   name="email"
+                  autoFocus
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 p-2"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -231,6 +232,7 @@ export default function LoginPage() {
                   type="password"
                   id="password"
                   name="password"
+                  autoFocus
                   className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 p-2"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -266,20 +268,22 @@ export default function LoginPage() {
                     "Sign in"
                   )}
                 </button>
-                <div className="flex lg:flex-row lg:gap-2 mt-4 flex-col gap-4 items-center">
-                  <div
-                    onClick={showOtpCodePage}
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 text-white text-sm font-medium rounded-md shadow-sm bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-600 p-2 hover:cursor-pointer"
-                  >
-                    {loading ? (
-                      <Loader2Icon className="animate-spin" />
-                    ) : (
-                      <>
-                        <GiGuards className="mr-2" /> Passwordless login
-                      </>
-                    )}
+                {password === "" && (
+                  <div className="flex lg:flex-row lg:gap-2 mt-4 flex-col gap-4 items-center">
+                    <div
+                      onClick={showOtpCodePage}
+                      className="inline-flex items-center px-4 py-2 border border-gray-300 text-white text-sm font-medium rounded-md shadow-sm bg-amber-500 hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-600 p-2 hover:cursor-pointer"
+                    >
+                      {loading ? (
+                        <Loader2Icon className="animate-spin" />
+                      ) : (
+                        <>
+                          <GiGuards className="mr-2" /> Passwordless login
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </>
           )}
