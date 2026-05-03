@@ -38,3 +38,15 @@ export type SignInTypes = {
   email: string;
   password: string;
 }
+
+export type UserType = {
+  _id: string;
+  authType: string;
+  createdAt: string;
+  email: string;
+  isVerified: true;
+  name: string;
+  orders: string[];
+  role: 'user' | 'vendor' | 'admin' | 'superadmin';
+  updatedAt: string;
+}

@@ -1,3 +1,9 @@
+"use client";
+import { useUser } from "@/app/context/UserContext";
+import { UserType } from "@/app/types";
+import Profile from "@/app/ui/profile/profile";
+
 export default function Page() {
-  return <div>Profile Page</div>
+  const {user} = useUser();
+  return <Profile user={user as UserType}/>
 }

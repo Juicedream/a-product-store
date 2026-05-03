@@ -11,6 +11,7 @@ import { apiFetch } from "../lib/apiFetch";
 import { createSession, deleteSession, getSession } from "../lib/session";
 import { Toast } from "../lib/toast";
 import { storage } from "../lib/storage";
+import { ApiError, NetworkError } from "../lib/error";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
 
@@ -32,6 +33,36 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false); // always start false
 
+  const catchError = (error: Error) => {
+    if (
+      error instanceof TypeError &&
+      (error.message.includes("fetch") ||
+        error.message.includes("NetworkError") ||
+        error.message.includes("Failed to fetch") ||
+        error.message.includes("network"))
+    ) {
+      Toast.error(
+        "No internet connection or server is down. Please try again.",
+      );
+      return;
+    }
+    if (error instanceof NetworkError) {
+      Toast.error(
+        "No internet connection or server is down. Please try again.",
+      );
+    } else if (error instanceof ApiError) {
+      if (error.status === 503) {
+        Toast.error(
+          "Server is temporarily unavailable. Please try again later.",
+        );
+      } else {
+        Toast.error(error.message);
+      }
+    } else {
+      Toast.error("Something went wrong. Please try again.");
+    }
+  };
+
   const fetchUserProfile = useCallback(async () => {
     try {
       setLoading(true);
@@ -40,6 +71,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       setIsAuthenticated(true);
     } catch (error) {
       console.error("Failed to fetch user:", error);
+      catchError(error as Error);
       setUser(null);
       setIsAuthenticated(false);
       storage.remove("accessToken"); // clean up bad token
@@ -65,12 +97,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         const data = await res.json();
         await createSession(data.refreshToken);
         storage.set("accessToken", data.accessToken);
+        storage.set("lastSeenAt", new Date().toISOString());
         await fetchUserProfile();
         Toast.default("Login Successful");
         return true;
       } catch (error) {
         console.error("Login failed:", error);
-        Toast.error("An unexpected error occurred");
+        catchError(error as Error);
         return false;
       } finally {
         setLoading(false);
@@ -89,12 +122,14 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       });
       if (!res.ok) {
         const errorData = await res.json();
-        Toast.default(errorData.message || "Login failed");
+        // Toast.default(errorData.message || "Login failed");
         if (
           errorData.message ===
           "Kindly use the otp previously sent to your email"
-        )
+        ) {
           return true;
+        }
+        catchError(errorData as Error);
         return false;
       }
       const data = await res.json();
@@ -105,8 +140,8 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         return false;
       }
     } catch (error) {
-      console.error("Login failed:", error);
-      Toast.error("An unexpected error occurred");
+      console.error("Passwordless Login failed:", error);
+      catchError(error as Error);
       return false;
     } finally {
       setLoading(false);
@@ -131,12 +166,13 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         const data = await res.json();
         await createSession(data.refreshToken);
         storage.set("accessToken", data.accessToken);
+        storage.set("lastSeenAt", new Date().toISOString());
         await fetchUserProfile();
         Toast.default("Login Successful");
         return true;
       } catch (error) {
         console.error("Otp Verification failed:", error);
-        Toast.error("An unexpected error occurred");
+        catchError(error as Error);
         return false;
       } finally {
         setLoading(false);
@@ -158,6 +194,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     //   Toast.default(errorData.message || "Login failed");
     // }
     storage.remove("accessToken");
+    storage.remove("lastSeenAt");
     await deleteSession();
     setUser(null);
     setIsAuthenticated(false);
