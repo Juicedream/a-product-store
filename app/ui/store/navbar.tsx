@@ -15,7 +15,7 @@ const navlinks = [
 ];
 
 export default function Navbar() {
-  const { loading } = useUser();
+  const { loading, user } = useUser();
   const pathname = usePathname();
   const { cartTotal } = useCart();
  
@@ -49,7 +49,7 @@ export default function Navbar() {
             ))}
           </ul>
         </div>
-        <div className="flex space-x-6 text-sm">
+        <div className="flex space-x-6 text-sm items-center">
           <div
             title="Search here"
             className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer"
@@ -58,10 +58,14 @@ export default function Navbar() {
           </div>
           <Link
             href={"/profile"}
-            title="Your profile"
+            title={user?.name ? `${user.name}'s Profile` : "Your Profile"}
             className="transition duration-500 ease-in-out transform hover:-translate-y-1 hover:cursor-pointer"
           >
-            <CircleUserRound size={18} />
+            {!user ? <CircleUserRound size={18} /> : (
+              <div className="capitalize rounded-full text-white bg-slate-500 px-2 text-xl">
+                {user?.name.charAt(0)}
+              </div>
+            )}
           </Link>
           <Link
             href={"/cart"}

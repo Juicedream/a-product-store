@@ -4,9 +4,10 @@ import { UserType } from "@/app/types";
 import clsx from "clsx";
 import { CameraIcon, Edit2Icon, HouseIcon, User2 } from "lucide-react";
 import Link from "next/link";
+import ProfileSkeleton from "./profileSkeleton";
 
 
-export default function Profile({ user }: { user: UserType }) {
+export default function Profile({ user, loading }: { user: UserType, loading: boolean }) {
   console.log({ user });
   const { formatted } = useLastSeen();
   let formattedCheck = formatted.split("")[0];
@@ -15,6 +16,8 @@ export default function Profile({ user }: { user: UserType }) {
   } else {
     formattedCheck = "true";
   }
+
+  if(loading) return <ProfileSkeleton />
 
   if (!user) return;
   return (

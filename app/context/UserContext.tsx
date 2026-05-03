@@ -12,11 +12,12 @@ import { createSession, deleteSession, getSession } from "../lib/session";
 import { Toast } from "../lib/toast";
 import { storage } from "../lib/storage";
 import { ApiError, NetworkError } from "../lib/error";
+import { UserType } from "../types";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
 
 type UserContextType = {
-  user: Record<string, unknown> | null;
+  user: UserType | null;
   loading: boolean;
   isAuthenticated: boolean;
   loginWithEmailPassword: (email: string, password: string) => Promise<boolean>;
